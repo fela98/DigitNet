@@ -2,7 +2,10 @@ import mnistdata
 from keras.models import Sequential
 from keras.layers import Dense, Activation
 import numpy as np
+from tensorflow import set_random_seed
 
+set_random_seed(1)
+np.random.seed(1)
 
 def main():
     mnist = mnistdata.read_data_sets("data", one_hot=True, reshape=False)
