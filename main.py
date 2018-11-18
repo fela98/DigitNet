@@ -16,7 +16,8 @@ def main():
 
     batch_size=100
 
-    model.fit(data_transformer(mnist.train.images), mnist.train.labels, epochs=1, batch_size=batch_size)
+    model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.fit(data_transformer(mnist.train.images), mnist.train.labels, epochs=10, batch_size=batch_size)
 
     print("\n|---- EVALUATING ----|")
 
@@ -28,9 +29,20 @@ def main():
 
 def simple_model():
     model = Sequential()
-    model.add(Dense(32, input_shape=(784,)))
+
+    model.add(Dense(30))
     model.add(Dense(10, activation='softmax'))
-    model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
+
+    return model, flatten_images
+
+def more_layers():
+    model = Sequential()
+    
+    model.add(Dense(200, activation='sigmoid'))
+    model.add(Dense(100, activation='sigmoid'))
+    model.add(Dense(60, activation='sigmoid'))
+    model.add(Dense(30, activation='sigmoid'))
+    model.add(Dense(10, activation='softmax'))
 
     return model, flatten_images
 
