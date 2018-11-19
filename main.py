@@ -35,7 +35,7 @@ def main():
 
     score = model.evaluate(flatten_images(mnist.test.images), mnist.test.labels, batch_size=batch_size)
 
-    print(model.metrics_names[1] + ": ", "%.2f" % (score[1]*100), "%")
+    print("Accuracy: ", "%.2f" % (score[1]*100), "%")
 
     return
 
