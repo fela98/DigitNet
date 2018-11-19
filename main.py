@@ -3,21 +3,33 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation
 import numpy as np
 from tensorflow import set_random_seed
+import argparse
 
 set_random_seed(1)
 np.random.seed(1)
 
 def main():
-    mnist = mnistdata.read_data_sets("data", one_hot=True, reshape=False)
+    parser = argparse.ArgumentParser(description='Train and evaluate DigitNet to predict handwritten digits')
+    parser.add_argument('--epochs', default=5, type=int,
+                help='The number of epochs to run the model')
+    parser.add_argument('--model', default='more-layers', 
+                help='Specifies which model to run, available models are: simple, more-layers')
 
-    model = simple_model()
+    args = parser.parse_args()
+
+    if args.model == 'simple':
+        model = simple_model()
+    elif args.model == 'more-layers':
+        model = more_layers()
+
+    mnist = mnistdata.read_data_sets("data", one_hot=True, reshape=False)
 
     print("\n|---- TRAINING ----|")
 
     batch_size=100
 
     model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
-    model.fit(flatten_images(mnist.train.images), mnist.train.labels, epochs=10, batch_size=batch_size)
+    model.fit(flatten_images(mnist.train.images), mnist.train.labels, epochs=args.epochs, batch_size=batch_size)
 
     print("\n|---- EVALUATING ----|")
 
