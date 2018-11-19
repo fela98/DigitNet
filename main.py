@@ -12,17 +12,17 @@ def main():
     parser = argparse.ArgumentParser(description='Train and evaluate DigitNet to predict handwritten digits')
     parser.add_argument('--epochs', default=5, type=int,
                 help='The number of epochs to run the model')
-    parser.add_argument('--model', default='more-layers', 
-                help='Specifies which model to run, available models are: simple, more-layers')
+    parser.add_argument('--model', default='multilayer', 
+                help='Specifies which model to run, available models are: simple, sigmoid, multilayer')
 
     args = parser.parse_args()
 
     if args.model == 'simple':
-        model = simple_model()
+        model = simple()
     elif args.model == 'sigmoid':
         model = sigmoid()
-    elif args.model == 'more-layers':
-        model = more_layers()
+    elif args.model == 'multilayer':
+        model = multilayer()
 
     mnist = mnistdata.read_data_sets("data", one_hot=True, reshape=False)
 
@@ -41,7 +41,7 @@ def main():
 
     return
 
-def simple_model():
+def simple():
     model = Sequential()
 
     model.add(Dense(30))
@@ -57,7 +57,7 @@ def sigmoid():
 
     return model
 
-def more_layers():
+def multilayer():
     model = Sequential()
     
     model.add(Dense(200, activation='sigmoid'))
@@ -67,8 +67,6 @@ def more_layers():
     model.add(Dense(10, activation='softmax'))
 
     return model
-
-# Data transformers
 
 def flatten_images(arr):
     return np.reshape(arr, (arr.shape[0], arr.shape[1]*arr.shape[2]))
