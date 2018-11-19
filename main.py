@@ -19,6 +19,8 @@ def main():
 
     if args.model == 'simple':
         model = simple_model()
+    elif args.model == 'sigmoid':
+        model = sigmoid()
     elif args.model == 'more-layers':
         model = more_layers()
 
@@ -43,6 +45,14 @@ def simple_model():
     model = Sequential()
 
     model.add(Dense(30))
+    model.add(Dense(10, activation='softmax'))
+
+    return model
+
+def sigmoid():
+    model = Sequential()
+
+    model.add(Dense(30, activation='sigmoid'))
     model.add(Dense(10, activation='softmax'))
 
     return model
