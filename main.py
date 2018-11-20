@@ -38,8 +38,6 @@ def main():
 
     training_images = data_transformer(mnist.train.images)
     testing_images = data_transformer(mnist.test.images)
-    
-    print(np.shape(training_images))
 
     model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
     model.fit(training_images, mnist.train.labels, epochs=args.epochs, batch_size=batch_size)
@@ -55,7 +53,7 @@ def main():
 def simple():
     model = Sequential()
 
-    model.add(layers.Dense(30))
+    model.add(layers.Dense(30, input_shape=(28*28,)))
     model.add(layers.Dense(10, activation='softmax'))
 
     return model, flatten_images
@@ -63,7 +61,7 @@ def simple():
 def sigmoid():
     model = Sequential()
 
-    model.add(layers.Dense(30, activation='sigmoid'))
+    model.add(layers.Dense(30, input_shape=(28*28,), activation='sigmoid'))
     model.add(layers.Dense(10, activation='softmax'))
 
     return model, flatten_images
@@ -71,7 +69,7 @@ def sigmoid():
 def multilayer():
     model = Sequential()
     
-    model.add(layers.Dense(200, activation='sigmoid'))
+    model.add(layers.Dense(200, input_shape=(28*28,), activation='sigmoid'))
     model.add(layers.Dense(100, activation='sigmoid'))
     model.add(layers.Dense(60, activation='sigmoid'))
     model.add(layers.Dense(30, activation='sigmoid'))
@@ -85,29 +83,32 @@ def convolutional():
     model.add(layers.Conv2D(
         input_shape=(28, 28, 1),
         padding='same',
-        filters=6,
+        filters=8,
         kernel_size=6,
-        strides=1
+        strides=1,
+        activation='relu'
     ))
 
     model.add(layers.Conv2D(
-        filters=12,
+        filters=16,
         padding='same',
         kernel_size=5,
-        strides=2
+        strides=2,
+        activation='relu'
     ))
 
     model.add(layers.Conv2D(
-        filters=24,
+        filters=32,
         padding='same',
         kernel_size=4,
-        strides=2
+        strides=2,
+        activation='relu'
     ))
 
     model.add(layers.Flatten())
 
     model.add(layers.Dense(200, activation='relu'))
-    model.add(layers.Dropout(0.75))
+    model.add(layers.Dropout(0.4))
     model.add(layers.Dense(10, activation='softmax'))
 
 
